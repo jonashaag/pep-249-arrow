@@ -5,6 +5,14 @@
 > - `fetchall_arrow()`: Fetch all (remaining) rows of a query result, returning them as a single pyarrow.Table. Implementations do not need to take into account the cursor's arraysize attribute. Error handling is equivalent to the `fetchall()` method.
 > - `fetchmany_arrow([size])`: Fetch the next set of rows of a query result, returning a pyarrow.Table. An empty pyarrow.Table is returned when no more rows are available. The number of rows to fetch per call is specified by the parameter.  If it is not given, the number of rows to be fetched may be chosen freely by the implementation. The method should try to fetch as many rows as indicated by the size parameter. If this is not possible due to the specified number of rows not being available, fewer rows may be returned. Error handling is equivalent to the `fetchmany()` method.
 
+TODO:
+
+- `apilevel_arrow`
+- Do we want to specify any Arrow specific exceptions?
+- `description_arrow`: `name`, `arrow_type`.
+- Mandatory column types: Do we want to specify some mandatory type mappings? Eg. SQL int64 is always mapped to Arrow's int64. We should try a couple of implementations to see what types they return.
+- 
+
 # PEP XXXX: Extension of PEP 249 - Python Database API Specification v2.0 with Arrow Support
 
 ## Abstract
