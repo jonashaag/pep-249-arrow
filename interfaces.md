@@ -3,7 +3,7 @@
 ## Turbodbc
 
 ```py
-def fetcharrowbatches(self, strings_as_dictionary=False, adaptive_integers=False):
+def fetcharrowbatches(self, strings_as_dictionary=False, adaptive_integers=False) -> Generator[pyarrow.Table]:
     """
     Fetches rows in the active result set generated with ``execute()`` or
     ``executemany()`` as an iterable of arrow tables.
@@ -20,12 +20,8 @@ def fetcharrowbatches(self, strings_as_dictionary=False, adaptive_integers=False
     :return: generator of ``pyarrow.Table``
     """
 
-def fetchallarrow(self, ...):
-    """
-    [... same args ...]
-
-    :return: ``pyarrow.Table``
-    """
+def fetchallarrow(self, ...) -> pyarrow.Table:
+    """(Same args as fetcharrowbatches.)"""
 ```
 
 ## Snowflake Connector Python
