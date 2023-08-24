@@ -27,3 +27,44 @@ def fetchallarrow(self, ...):
     :return: ``pyarrow.Table``
     """
 ```
+
+## Snowflake Connector Python
+
+```py
+def fetch_arrow_batches(self) -> Iterator[Table]: ...
+def fetch_arrow_all(self) -> Table | None: ...
+```
+
+## ADBC
+
+```py
+def fetchallarrow(self) -> pyarrow.Table: ...
+def fetch_arrow_table(self) -> pyarrow.Table: ...
+def fetch_record_batch(self) -> pyarrow.RecordBatchReader: ...
+```
+
+## ConnectorX
+
+```py
+def read_sql(
+    conn: Union[str, Dict[str, str]],
+    query: Union[List[str], str],
+    *,
+    return_type: str = "pandas",
+    ...
+) -> pyarrow.Table | ...others... :
+```
+
+## DuckDB
+
+```py
+def fetch_arrow_table(self, rows_per_batch: int = ...) -> pyarrow.Table: ...
+def fetch_record_batch(self, rows_per_batch: int = ...) -> pyarrow.RecordBatchReader: ...
+```
+
+## Databricks
+
+```py
+def fetchall_arrow(self) -> pyarrow.Table: ...
+def fetchmany_arrow(self, size) -> pyarrow.Table:  # Fetches the next batch
+```
