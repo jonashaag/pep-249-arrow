@@ -9,8 +9,8 @@ TODO:
 
 - `apilevel_arrow`
 - Do we want to specify any Arrow specific exceptions?
-- `description_arrow`: `name`, `arrow_type`.
 - Mandatory column types: Do we want to specify some mandatory type mappings? Eg. SQL int64 is always mapped to Arrow's int64. We should try a couple of implementations to see what types they return.
+  NO, add explanation why
 - 
 
 # PEP XXXX: Extension of PEP 249 - Python Database API Specification v2.0 with Arrow Support
