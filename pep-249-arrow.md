@@ -1,56 +1,50 @@
 **ChatGPT Prompt:**
 
 > Write a Python Enhancement Proposal that extends PEP 249 (Python Database API Specification v2.0) as follows:
-> Define two new methods on Cursor objects:
-> - `fetchall_arrow()`: Fetch all (remaining) rows of a query result, returning them as a single pyarrow.Table. Implementations do not need to take into account the cursor's arraysize attribute. Error handling is equivalent to the `fetchall()` method.
-> - `fetchmany_arrow([size])`: Fetch the next set of rows of a query result, returning a pyarrow.Table. An empty pyarrow.Table is returned when no more rows are available. The number of rows to fetch per call is specified by the parameter.  If it is not given, the number of rows to be fetched may be chosen freely by the implementation. The method should try to fetch as many rows as indicated by the size parameter. If this is not possible due to the specified number of rows not being available, fewer rows may be returned. Error handling is equivalent to the `fetchmany()` method.
+> Define the following additions to Cursor objects:
+> - `arrow_fetchall()`: Fetch all (remaining) rows of a query result, returning them as a single `pyarrow.Table`. Implementations do not need to take into account the cursor's `arraysize` attribute. Error handling is equivalent to the `fetchall()` method.
+> - `arrow_fetchmany([size])`: Fetch the next set of rows of a query result, returning a `pyarrow.Table`. An empty `pyarrow.Table` is returned when no more rows are available. The number of rows to fetch per call is specified by the parameter. If it is not given, the number of rows to be fetched may be chosen freely by the implementation. The method should try to fetch as many rows as indicated by the size parameter. If this is not possible due to the specified number of rows not being available, fewer rows may be returned. Error handling is equivalent to the `fetchmany()` method.
+> - `arrow_apilevel`: An attribute analogous to `apilevel` that always has the value `"1.0"`.
+> Add a section of things that aren't covered by the new PEP with the following content:
+> - Data types of the returned `pyarrow.Table`: For efficiency reasons, the Arrow data types returned from the `arrow_fetchall()` and `arrow_fetchmany()` methods are implementation defined. Note that they may depend on the actual data that is fetched from the database; for example, an implementation may decide to use a smaller integers type in the resulting `pyarrow.Table` than is used to represent the data in the database.
 
-TODO:
-
-- `apilevel_arrow`
-- Do we want to specify any Arrow specific exceptions?
-- Mandatory column types: Do we want to specify some mandatory type mappings? Eg. SQL int64 is always mapped to Arrow's int64. We should try a couple of implementations to see what types they return.
-  NO, add explanation why
-- 
-
-# PEP XXXX: Extension of PEP 249 - Python Database API Specification v2.0 with Arrow Support
+# PEP: XXXX
+## Title: Python Database API Specification v2.1 - Arrow Extension
+## Author: Your Name <your.email@example.com>
+## Status: Draft
+## Type: Standards Track
+## Content-Type: text/x-rst
+## Created: DD-MM-YYYY
+## Python-Version: 3.10
+## Post-History: DD-MM-YYYY
 
 ## Abstract
 
-This PEP proposes an extension to the Python Database API Specification v2.0 (PEP 249) to include support for Apache Arrow. Two new methods are proposed to be added to the Cursor class: `fetchall_arrow()` and `fetchmany_arrow([size])`.
-
-## Rationale
-
-Apache Arrow is a cross-language development platform for in-memory data. It specifies a standardized language-independent columnar memory format for flat and hierarchical data, organized for efficient analytic operations on modern hardware. The Arrow Python library, PyArrow, provides Python APIs to this platform. 
-
-By extending the Python Database API to include methods that return PyArrow tables, we can leverage the efficiency of Arrow's columnar data structures, and facilitate interoperability with other systems that use Arrow.
+This PEP proposes an extension to the Python Database API Specification v2.0 (PEP 249) to include methods that return query results as `pyarrow.Table` objects. This extension aims to provide an efficient way to handle large datasets and improve interoperability with Apache Arrow.
 
 ## Specification
 
-### The `fetchall_arrow()` Method
+### Additions to Cursor Objects
 
-The `fetchall_arrow()` method fetches all (remaining) rows of a query result, returning them as a single `pyarrow.Table`. Implementations do not need to take into account the cursor's `arraysize` attribute. Error handling is equivalent to the `fetchall()` method.
+The following methods and attributes are added to the `Cursor` objects:
 
-```python
-def fetchall_arrow(self) -> pyarrow.Table: ...
-```
+#### `arrow_fetchall()`
 
-### The `fetchmany_arrow([size])` Method
+Fetch all (remaining) rows of a query result, returning them as a single `pyarrow.Table`. Implementations do not need to take into account the cursor's `arraysize` attribute. Error handling is equivalent to the `fetchall()` method.
 
-The `fetchmany_arrow([size])` method fetches the next set of rows of a query result, returning a `pyarrow.Table`. An empty `pyarrow.Table` is returned when no more rows are available. The number of rows to fetch per call is specified by the `size` parameter. If it is not given, the number of rows to be fetched may be chosen freely by the implementation. The method should try to fetch as many rows as indicated by the `size` parameter. If this is not possible due to the specified number of rows not being available, fewer rows may be returned. Error handling is equivalent to the `fetchmany()` method.
+#### `arrow_fetchmany([size])`
 
-```python
-def fetchmany_arrow(self, size: Optional[int] = None) -> pyarrow.Table: ...
-```
+Fetch the next set of rows of a query result, returning a `pyarrow.Table`. An empty `pyarrow.Table` is returned when no more rows are available. The number of rows to fetch per call is specified by the `size` parameter. If it is not given, the number of rows to be fetched may be chosen freely by the implementation. The method should try to fetch as many rows as indicated by the `size` parameter. If this is not possible due to the specified number of rows not being available, fewer rows may be returned. Error handling is equivalent to the `fetchmany()` method.
 
-## Backwards Compatibility
+#### `arrow_apilevel`
 
-This PEP is fully backwards compatible as it only introduces new methods.
+An attribute analogous to `apilevel` that always has the value "1.0".
 
-## References
+## Things Not Covered by This PEP
 
-- [PEP 249 -- Python Database API Specification v2.0](https://www.python.org/dev/peps/pep-0249/)
-- [Apache Arrow and PyArrow](https://arrow.apache.org/docs/python/index.html)
+### Data Types of the Returned `pyarrow.Table`
+
+For efficiency reasons, the Arrow data types returned from the `arrow_fetchall()` and `arrow_fetchmany()` methods are implementation defined. Note that they may depend on the actual data that is fetched from the database; for example, an implementation may decide to use a smaller integers type in the resulting `pyarrow.Table` than is used to represent the data in the database.
 
 ## Copyright
 
