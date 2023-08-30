@@ -13,9 +13,9 @@ Abstract
 It is proposed to add an optional extension to :pep:`249` (Python Database API Specification v2.0) to support fetching rows as ``pyarrow.Table``.
 Namely, this PEP proposes to add the following methods and attributes to the ``Cursor`` object:
 
-- ``arrow_fetchall()``
-- ``arrow_fetchmany([size])``
-- ``arrow_apilevel``
+- ``arrow_fetchall()`` method
+- ``arrow_fetchmany([size])`` method
+- ``arrow_apilevel`` attribute
 
 Motivation
 ==========
