@@ -42,6 +42,12 @@ Database driveres that support fetching data in the Arrow format should expose t
   The number of rows to fetch per call is specified by the ``size`` parameter. If it is not given, the number of rows to be fetched may be chosen freely by the implementation.
   The method should try to fetch as many rows as indicated by the size parameter. If this is not possible due to the specified number of rows not being available, fewer rows may be returned.
 
+Mixing Arrow and non-Arrow interfaces
+-------------------------------------
+
+Users of the Arrow API should not mix the Arrow and non-Arrow interfaces.
+Calling ``arrow_fetch*`` after a call to ``fetch*`` on the same ``Cursor``, and vice-versa, raises an exception.
+
 
 Non-Goals
 =========
