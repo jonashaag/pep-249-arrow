@@ -64,3 +64,16 @@ def fetch_record_batch(self, rows_per_batch: int = ...) -> pyarrow.RecordBatchRe
 def fetchall_arrow(self) -> pyarrow.Table: ...
 def fetchmany_arrow(self, size) -> pyarrow.Table:  # Fetches the next batch
 ```
+
+## BigQuery
+
+```py
+def to_arrow_iterable(self, ...) -> Iterator[pyarrow.RecordBatch]:
+def to_arrow(self, ...) -> pyarrow.Table:
+```
+
+## arrow-odbc-py
+
+```py
+def read_arrow_batches_from_odbc(...) -> BatchReader (= Iterator[pyarrow.RecordBatch])
+```
